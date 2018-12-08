@@ -73,20 +73,50 @@
         <!-- main navigation -->
         <nav class="navbar navbar-expand-lg nav_custom">
             <div class="container">
-                <a class="navbar-brand mr-lg-5" href="welcome.blade.php">
+                <a class="navbar-brand mr-lg-5" href="{{route('rent')}}">
                     <img src="{{asset('img/logo.png')}}" alt="logo" width="180" class="img-fluid">
                 </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
               <span class="ion-android-menu"></span>
             </button>
-          
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav ml-auto">
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Войти') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Зарегистрироваться') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" style="cursor: pointer">Личный кабинет</a>
+                                    <a class="dropdown-item" style="cursor: pointer">Корзина</a>
+
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Выйти') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
                     </ul>
                 </div>
-                <a href="{{route('login')}}" class="nav_button" style="border: 2px solid #2c78a2; margin-right: 20px;  background: #2c78a2">Войти</a>
-                <a href="{{route('register')}}" class="nav_button" style="background: #2c78a2; border: 2px solid #2c78a2">Регистрация</a>
+                {{--<a href="{{route('login')}}" class="nav_button" style="border: 2px solid #2c78a2; margin-right: 20px;  background: #2c78a2">Войти</a>--}}
+                {{--<a href="{{route('register')}}" class="nav_button" style="background: #2c78a2; border: 2px solid #2c78a2">Регистрация</a>--}}
             </div>
         </nav>
         <!-- nav section end -->
