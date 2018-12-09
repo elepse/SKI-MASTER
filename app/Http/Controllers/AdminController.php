@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\RentProduct;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Image;
 
 
@@ -46,7 +47,6 @@ class AdminController extends Controller
     public function getBalanceUser(Request $request)
     {
         $id = $request->get('id', null);
-
         $query = (new User())->newQuery();
         $query = $query->where('id', '=', "$id");
         return (['status' => true, 'user' => $query->first()]);

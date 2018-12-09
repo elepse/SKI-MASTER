@@ -74,12 +74,18 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('rent')}}">Вернутся на сайт</a>
+                            <a class="nav-link" id="userBalance" href="{{route('main')}}">Вернутся на сайт</a>
                         </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                           <a class="nav-link" href="{{route('cart')}}" style="cursor: pointer"> Корзина <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <p class="nav-link" href="{{route('cart')}}" style="cursor: pointer">{{Auth::user()->balance}}</p>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                                 <li class="nav-item">
@@ -122,6 +128,7 @@
     </div>
 <script>
     window.csrf = '{{csrf_token()}}';
+    userBalance = '{{Auth::user()->balance}}'
 </script>
 </body>
 </html>

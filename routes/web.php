@@ -35,6 +35,11 @@
         })->name('rent')->middleware('auth');
 
         Route::post('/rent/search', 'RentController@search')->name('RentSearch');
+
+        Route::get('/cart', function (){
+           return view('lk/cart');
+        })->middleware('auth')->name('cart');
+       Route::post('/buyCart','RentController@buyCart')->name('buyCart');
     });
 
     Route::group(['prefix'=>'/admin','auth'],function(){
