@@ -41,6 +41,13 @@
 
         Route::get('/','AdminController@index')->name('adminMain');
         Route::get('/getUsers','AdminController@getUsers')->name('getUsers');
-
+        Route::get('/getBalanceUser','AdminController@getBalanceUser')->name('getBalanceUser');
+        Route::post('/addBalanceUser','AdminController@addBalanceUser')->name('addBalanceUser');
+        Route::get('/products','AdminController@products')->name('products');
+        Route::get('/getProducts','AdminController@getProducts')->name('getProducts');
+        Route::get('/getProduct','AdminController@getProduct')->name('getProduct');
+        Route::get('/deleteProduct','AdminController@deleteProduct')->name('deleteProduct');
+        Route::post('/addProduct','AdminController@addProduct')->name('addProduct');
+        Route::post('/editProduct','AdminController@editProduct')->name('editProduct');
 });
 

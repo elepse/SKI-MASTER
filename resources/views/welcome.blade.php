@@ -232,7 +232,7 @@
                             <div class="row">
                                 <div class="col-7">
                                     <div class="group">
-                                        <input type="text" required>
+                                        <input class="inputMain" type="text" required>
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Your Email</label>

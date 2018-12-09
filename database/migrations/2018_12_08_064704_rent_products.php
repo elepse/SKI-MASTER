@@ -17,7 +17,9 @@ class RentProducts extends Migration
                 $table->increments('id');
                 $table->string('name',255)->nullable(false);
                 $table->dateTime('create_at');
+                $table->string('image')->default('default.jpg');
                 $table->dateTime('edit_at');
+                $table->decimal('price')->default(0);
         });
     }
 

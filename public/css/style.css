@@ -24,17 +24,6 @@ ul {
   margin-bottom: 30px;
 }
 
-input, textarea {
-  font-size: 18px;
-  padding: 10px 10px 10px 5px;
-  display: block;
-  width: 100%;
-  border: none;
-  background: none;
-  color: #fff;
-  border-bottom: 1px solid #888888;
-}
-
 input:focus, textarea:focus {
   outline: none;
 }
