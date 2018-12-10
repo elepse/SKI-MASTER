@@ -74,18 +74,37 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" id="userBalance" href="{{route('main')}}">Вернутся на сайт</a>
+                            <a class="nav-link" href="{{route('main')}}">Вернутся на сайт</a>
+                        </li>
+                        @if (Auth::check())
+                        @if(Auth::user()->role == 1)
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Администрирование
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{route('products')}}" style="cursor: pointer">Продукты</a>
+                                <a class="dropdown-item" href="{{route('adminMain')}}" style="cursor: pointer">Пользователи</a>
+                            </div>
+                        </li>
+                            @endif
+                            @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('rent')}}">Аренда</a>
                         </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @if (Auth::check())
                         <li class="nav-item">
                            <a class="nav-link" href="{{route('cart')}}" style="cursor: pointer"> Корзина <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                         </li>
                         <li class="nav-item">
-                            <p class="nav-link" href="{{route('cart')}}" style="cursor: pointer">{{Auth::user()->balance}}</p>
+                            <p class="nav-link" href="{{route('cart')}}" style="cursor: pointer">{{Auth::user()->balance}}<spand> ₽</spand></p>
                         </li>
+                        @endif
                         <!-- Authentication Links -->
                         @guest
                                 <li class="nav-item">
@@ -103,8 +122,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" style="cursor: pointer">Личный кабинет</a>
-                                        <a class="dropdown-item" style="cursor: pointer">Корзина</a>
+                                        <a class="dropdown-item" href="{{route('myProducts')}}" style="cursor: pointer">Мои покупки</a>
 
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
@@ -128,7 +146,9 @@
     </div>
 <script>
     window.csrf = '{{csrf_token()}}';
-    userBalance = '{{Auth::user()->balance}}'
+    @if (Auth::check())
+        userBalance = '{{Auth::user()->balance}}';
+    @endif
 </script>
 </body>
 </html>

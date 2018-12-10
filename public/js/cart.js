@@ -3,6 +3,7 @@ $(function () {
 });
 var sum = 0;
 function getCart() {
+    sum = 0;
     $('#productsCart').empty();
     var cart = sessionStorage.getItem('cart');
     cart = JSON.parse(cart);
@@ -20,8 +21,8 @@ function getCart() {
             $('#productsCart').append(product);
             sum += parseInt(i.price);
         });
-        $('#sumCart').text(sum + '₽');
     }
+    $('#sumCart').text(sum + '₽');
 }
 
 function deleteProductCart(id) {
@@ -39,7 +40,40 @@ function deleteProductCart(id) {
 }
 
 function buyCart() {
-    if (sum > userBalance){
+    var cart = sessionStorage.getItem('cart');
+    cart = JSON.parse(cart);
+    console.log(cart);
+    if (sum < userBalance && (cart != null && cart.length > 0)){
+        $.ajax({
+            url: '/lk/buyCart',
+            data: {
+                '_token': window.csrf,
+                'sum' : sum,
+                'products' : cart
+            },
+            dataType: 'json',
+            type: "post"
+        }).done(function (response) {
+            if (response !== undefined) {
+                if (response.status === true) {
+                    sessionStorage.clear();
+                    getCart();
+                    window.location.replace('/lk/rent');
+                } else if (response.status === false || response.status === 'error') {
+                    alert(response.error);
+                } else {
+                    alert('Ошибка запроса. Обратитесь к администратору.');
+                }
+            } else {
+                alert('Ошибка запроса. Обратитесь к администратору.');
+            }
+        });
+    }else{
         $('#notEnoughtMoney').modal('show');
     }
+}
+
+function clearCart() {
+sessionStorage.clear();
+getCart();
 }

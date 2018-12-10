@@ -18,8 +18,8 @@
         <h4 id="noneProducts"> Вы ничего не выбрали</h4>
         <hr>
         <h3 id="sumCart"></h3>
-        <button class="btn btn-danger">
-            Удалить
+        <button class="btn btn-danger" onclick="clearCart()">
+            Очистить
         </button>
         <button class="btn btn-primary" onclick="buyCart()">
             Купить

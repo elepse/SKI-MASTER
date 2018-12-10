@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use App\BoughtProduct;
+use Nexmo\Message\Query;
 
 
 class AdminController extends Controller
@@ -18,12 +20,20 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin/dashBoard');
+        if (Auth::user()->role == 1) {
+            return view('admin/dashBoard');
+        } else {
+            return redirect(route('rent'));
+        }
     }
 
     public function products()
     {
-        return view('admin/products');
+        if (Auth::user()->role == 1) {
+            return view('admin/products');
+        } else {
+            return redirect(route('rent'));
+        }
     }
 
     public function getUsers(Request $request)
@@ -91,24 +101,25 @@ class AdminController extends Controller
             $path = (asset("/img/imageProducts/" . $filename));
         }
 
-            (new RentProduct())->fill([
-                'name' => $name,
-                'price' => $price,
-                'image' => $path,
-                'create_at' => date("Y-m-d H:i:s"),
-                'edit_at' => date("Y-m-d H:i:s")
-            ])->save();
+        (new RentProduct())->fill([
+            'name' => $name,
+            'price' => $price,
+            'image' => $path,
+            'create_at' => date("Y-m-d H:i:s"),
+            'edit_at' => date("Y-m-d H:i:s")
+        ])->save();
 
         return redirect()->route('products');
     }
 
-    public function getProduct(Request $request){
-        $id = $request->get('id',null);
+    public function getProduct(Request $request)
+    {
+        $id = $request->get('id', null);
 
         $query = (new RentProduct())->newQuery();
-        $query = $query->where('id','=',"$id");
+        $query = $query->where('id', '=', "$id");
 
-        return(['status'=>true, 'product' => $query->first()]);
+        return (['status' => true, 'product' => $query->first()]);
     }
 
     public function editProduct(Request $request)
@@ -124,20 +135,38 @@ class AdminController extends Controller
             Image::make($image)->resize('200', '200')->save(public_path('/img/imageProducts/' . $filename));
             $path = (asset("/img/imageProducts/" . $filename));
         }
-           $query = (new RentProduct())->find($id)->fill([
-                'name' => $name,
-                'price' => $price,
-                'image' => $path,
-                'edit_at' => date("Y-m-d H:i:s")
-            ])->save();
+        $query = (new RentProduct())->find($id)->fill([
+            'name' => $name,
+            'price' => $price,
+            'image' => $path,
+            'edit_at' => date("Y-m-d H:i:s")
+        ])->save();
 
         return redirect()->route('products');
     }
 
-    public function deleteProduct(Request $request){
-        $id = $request->get('id','null');
+    public function deleteProduct(Request $request)
+    {
+        $id = $request->get('id', 'null');
 
-        $query =(new RentProduct())->find($id)->delete();
-        return(['status'=>$query]);
+        $query = (new RentProduct())->find($id)->delete();
+        return (['status' => $query]);
     }
+
+    public function getRentInfo(Request $request){
+        $id = $request->get('id',null);
+
+        $query = BoughtProduct::query()->join('rent_products','rent_products.id','=','bought_products.id_product');
+        $query = $query->where('id_user','=',"$id");
+
+        return['status'=>true,'products'=>$query->get()];
+    }
+
+    public function endTime(Request $request){
+        $id = $request->get('id',null);
+
+        (new BoughtProduct())->newQuery()->where('id_purchase','=',"$id")->update(array('end_time'=> date("Y-m-d H:i:s"),'status'=> 2));
+        return(['status'=>true]);
+    }
+
 }

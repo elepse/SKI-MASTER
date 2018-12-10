@@ -98,8 +98,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" style="cursor: pointer">Личный кабинет</a>
-                                    <a class="dropdown-item" style="cursor: pointer">Корзина</a>
+                                    <a class="dropdown-item" href="{{route('cart')}}" style="cursor: pointer">Мои покупки</a>
+                                    <a class="dropdown-item" href="{{route('rent')}}" style="cursor: pointer">Аренда</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -220,29 +220,13 @@
                         </div>
                     </div>
                     <div class="col-lg-3 offset-lg-1">
-                        <h4 class="mb-4">Office</h4>
-                        <p></p>
-                        <p>Phone: <a href="tel:+880-17-8649-4650">+880-17-8649-4650</a></p>
-                        <p>Email: <a href="mailto:info@maxsop.com">info@maxsop.com</a></p>
+
                     </div>
                     <div class="col-lg-4 offset-lg-1">
-                        <h4 class="mb-4">Newsletter</h4>
-                        <p class="mb-3">Sign up here to receive interesting updates. Effervescent the secure special.</p>
-                        <form action="#">
-                            <div class="row">
-                                <div class="col-7">
-                                    <div class="group">
-                                        <input class="inputMain" type="text" required>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
-                                        <label>Your Email</label>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <button>Subscribe</button>
-                                </div>
-                            </div>
-                        </form>
+                        <h4 class="mb-4">Офис</h4>
+                        <p> Россия, Сочи</p>
+                        <p>Phone: <a href="#">+8 800 555 35 55</a></p>
+                        <p>Email: <a href="#">info@SKI-MASTER.ru</a></p>
                     </div>
                 </div>
             </div>

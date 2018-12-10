@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
     Route::group(['prefix' => ''], function () {
     Route::get('/', 'MainController@Index')->name('main');
@@ -29,6 +30,11 @@
 
     Route::group(['prefix'=> 'lk','auth'], function (){
 
+        Route::get('/myProducts',function (){
+           return view('/lk/myProducts');
+        })->name('myProducts')->middleware('auth');
+
+        Route::get('getMyProducts','RentController@getMyProducts')->name('getMyProducts');
 
         Route::get('/rent', function (){
             return view('lk/rent');
@@ -54,5 +60,7 @@
         Route::get('/deleteProduct','AdminController@deleteProduct')->name('deleteProduct');
         Route::post('/addProduct','AdminController@addProduct')->name('addProduct');
         Route::post('/editProduct','AdminController@editProduct')->name('editProduct');
+        Route::post('/endTime','AdminController@endTime')->name('endTime');
+        Route::get('/getRentInfo','AdminController@getRentInfo')->name('getRentInfo');
 });
 
