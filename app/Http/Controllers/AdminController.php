@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\RentProduct;
+use App\Spole;
+use App\UserHasSpole;
+use function GuzzleHttp\Promise\queue;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use App\BoughtProduct;
-use Nexmo\Message\Query;
 
 
 class AdminController extends Controller
@@ -153,20 +155,43 @@ class AdminController extends Controller
         return (['status' => $query]);
     }
 
-    public function getRentInfo(Request $request){
-        $id = $request->get('id',null);
+    public function getRentInfo(Request $request)
+    {
+        $id = $request->get('id', null);
 
-        $query = BoughtProduct::query()->join('rent_products','rent_products.id','=','bought_products.id_product');
-        $query = $query->where('id_user','=',"$id");
+        $query = BoughtProduct::query()->join('rent_products', 'rent_products.id', '=', 'bought_products.id_product');
+        $query = $query->where('id_user', '=', "$id");
 
-        return['status'=>true,'products'=>$query->get()];
+        return ['status' => true, 'products' => $query->get()];
     }
 
-    public function endTime(Request $request){
-        $id = $request->get('id',null);
+    public function endTime(Request $request)
+    {
+        $id = $request->get('id', null);
 
-        (new BoughtProduct())->newQuery()->where('id_purchase','=',"$id")->update(array('end_time'=> date("Y-m-d H:i:s"),'status'=> 2));
-        return(['status'=>true]);
+        (new BoughtProduct())->newQuery()->where('id_purchase', '=', "$id")->update(array('end_time' => date("Y-m-d H:i:s"), 'status' => 2));
+        return (['status' => true]);
     }
 
+    public function slopes()
+    {
+        $counts = Spole::all('people_total');
+        return view('lk/slopes', ['counts' => $counts]);
+    }
+
+    public function userLocation(Request $request)
+    {
+        $id = $request->get('id', null);
+        $location = $request->get('location', null);
+        (new User())->find($id)->update(['location' => $location]);
+        if ($location != 1) {
+            (new UserHasSpole())->fill([
+                'id_user' => $id,
+                'id_spole' => $location,
+                'date_ski' => $today = date("y-m-d")
+            ])->save();
+        }
+        return (['status' => true]);
+
+    }
 }

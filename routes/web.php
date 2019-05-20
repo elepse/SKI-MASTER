@@ -41,11 +41,12 @@ use Illuminate\Support\Facades\Route;
         })->name('rent')->middleware('auth');
 
         Route::post('/rent/search', 'RentController@search')->name('RentSearch');
-
         Route::get('/cart', function (){
            return view('lk/cart');
         })->middleware('auth')->name('cart');
        Route::post('/buyCart','RentController@buyCart')->name('buyCart');
+        Route::get('slopes', 'AdminController@slopes')->name('slopes');
+
     });
 
     Route::group(['prefix'=>'/admin','auth'],function(){
@@ -62,5 +63,6 @@ use Illuminate\Support\Facades\Route;
         Route::post('/editProduct','AdminController@editProduct')->name('editProduct');
         Route::post('/endTime','AdminController@endTime')->name('endTime');
         Route::get('/getRentInfo','AdminController@getRentInfo')->name('getRentInfo');
+        Route::post('/userLocation', 'AdminController@userLocation')->name('userLocation');
 });
 

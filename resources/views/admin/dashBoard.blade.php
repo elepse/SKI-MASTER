@@ -1,41 +1,74 @@
 @extends('layouts/app')
 @section('content')
     <h3 class="text-center">Поиск</h3>
-<div class="col col-lg-6 offset-3 text-center row" >
-            <div class="col col-lg-6">
+    <div class="col col-lg-6 offset-3 text-center row">
+        <div class="col col-lg-6">
             <dd>Имя</dd>
-    <dt><input class="form-control" id="findNameUsers" type="text"></dt>
-            </div>
-            <div class="col col-lg-6">
-                <dl>
+            <dt><input class="form-control" id="findNameUsers" type="text"></dt>
+        </div>
+        <div class="col col-lg-6">
+            <dl>
                 <dd>Почта</dd>
                 <dt><input class="form-control" id="findEmailUsers" type="text"></dt>
-                </dl>
-            </div>
+            </dl>
+        </div>
     </div>
     <hr>
-<div class="col col-lg-12">
+    <div class="col col-lg-12">
 
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Почта</th>
-            <th scope="col">Баланс</th>
-            <th scope="col">Информация о аренде</th>
-        </tr>
-        </thead>
-        <tbody id="users">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Почта</th>
+                <th scope="col">Баланс</th>
+                <th scope="col">Информация о аренде</th>
+                <th scope="col">Запись на склон</th>
+            </tr>
+            </thead>
+            <tbody id="users">
 
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
     <script src="{{asset('js/admin.js')}}">
 
     </script>
+    <!-- модалка для регистрирования пользователя на склоне -->
+    <div class="modal fade" id="regSpoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Запись на склон</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formForUserLocation" class="col-lg-12">
+                        <input id="idUserForSpole" class="sr-only">
+                        <label for="userLocation">Выберите место нахождение пользователя:</label>
+                        <select class="form-control" id="userLocation">
+                            <option value="1">Не на склоне</option>
+                            <option value="2">Метель</option>
+                            <option value="3">Буран</option>
+                            <option value="4">Пурга</option>
+                            <option value="5">Ветер</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" onclick="saveLocationUser();" class="btn btn-primary">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- модалка для редактирования баланса -->
-    <div class="modal fade" id="changeBalanceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="changeBalanceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -70,30 +103,30 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <div class="modal-body">
-                        <div class="col col-lg-12">
-                            <h3>Аренда</h3>
+                <div class="modal-body">
+                    <div class="col col-lg-12">
+                        <h3>Аренда</h3>
 
-                            <table class="table table-sm table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Наименование</th>
-                                    <th scope="col">Создан</th>
-                                    <th scope="col">Истёк</th>
-                                    <th scope="col">Цена</th>
-                                </tr>
-                                </thead>
-                                <tbody id="RentInfoItem">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Наименование</th>
+                                <th scope="col">Создан</th>
+                                <th scope="col">Истёк</th>
+                                <th scope="col">Цена</th>
+                            </tr>
+                            </thead>
+                            <tbody id="RentInfoItem">
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="modal-footer">
+                </div>
+                <div class="modal-footer">
 
-                    </div>
+                </div>
             </div>
         </div>
     </div>
-    @endsection
+@endsection

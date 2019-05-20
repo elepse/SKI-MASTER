@@ -24,6 +24,9 @@ ul {
   margin-bottom: 30px;
 }
 
+.card-route {
+  margin: 30px;
+}
 input:focus, textarea:focus {
   outline: none;
 }

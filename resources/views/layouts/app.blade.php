@@ -93,6 +93,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('rent')}}">Аренда</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('slopes')}}">Склоны</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

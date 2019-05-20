@@ -10,8 +10,8 @@ function findUsers() {
     $.ajax({
         url: '/admin/getUsers',
         data: {
-            'name' : name,
-            'email' : email
+            'name': name,
+            'email': email
         },
         dataType: 'json',
         type: "GET"
@@ -19,12 +19,30 @@ function findUsers() {
         if (response !== undefined) {
             if (response.status === true) {
                 response.users.forEach(function (i,) {
-                    var user = $('<tr data-user="'+ i.id +'"></tr>');
+                    switch (i.location) {
+                        case 1:
+                            i.location = 'Не на склоне  ';
+                            break;
+                        case 2:
+                            i.location = 'На склоне: Метель  ';
+                            break;
+                        case 3:
+                            i.location = 'На склоне: Буран  ';
+                            break;
+                        case 4:
+                            i.location = 'На склоне: Пурга  ';
+                            break;
+                        case 5:
+                            i.location = 'На склоне: Ветер  ';
+                            break;
+                    }
+                    var user = $('<tr data-user="' + i.id + '"></tr>');
                     user.append($('<th></th>').append(i.id))
                         .append($('<th></th>').append(i.name + ' ').append($('<i class="fa fa-user" aria-hidden="true"></i>')))
                         .append($('<th></th>').append(i.email))
-                        .append($('<th></th>').append(i.balance).append('<i class="fa fa-pencil" style="color: #4ba233; font-size: 20px; cursor: pointer;" onclick="getBalance('+ i.id +')" aria-hidden="true"></i>'))
-                        .append($('<th></th>').append('<i class="fa fa-info" style="color: #3dabd9; font-size: 25px; cursor: pointer;" onclick="getRentInfo('+i.id+')" aria-hidden="true"></i>'));
+                        .append($('<th></th>').append(i.balance).append('<i class="fa fa-pencil" style="color: #4ba233; font-size: 20px; cursor: pointer;" onclick="getBalance(' + i.id + ')" aria-hidden="true"></i>'))
+                        .append($('<th></th>').append('<i class="fa fa-info" style="color: #3dabd9; font-size: 25px; cursor: pointer;" onclick="getRentInfo(' + i.id + ')" aria-hidden="true"></i>'))
+                        .append($('<th></th>').append(i.location).append('<i class="fa fa-map-marker" aria-hidden="true" style="color: #4ba233; font-size: 25px; cursor: pointer;" onclick="openSpoleModal(' + i.id + ')" aria-hidden="true"></i>'));
                     $('#users').append(user);
                 })
             } else if (response.status === false || response.status === 'error') {
@@ -37,22 +55,23 @@ function findUsers() {
         }
     });
 }
-$('#findEmailUsers').on('change',findUsers);
-$('#findNameUsers').on('change',findUsers);
+
+$('#findEmailUsers').on('change', findUsers);
+$('#findNameUsers').on('change', findUsers);
 
 function getBalance(id) {
     $('#balanceUserInChangeModal').val("");
     $.ajax({
         url: '/admin/getBalanceUser',
         data: {
-            'id' : id
+            'id': id
         },
         dataType: 'json',
         type: "GET"
     }).done(function (response) {
         if (response !== undefined) {
             if (response.status === true) {
-                $('#nameUserInChangeBalanceModal').text(response.user.name + ' ').append($('<i class="fa fa-user" aria-hidden="true"></i>')).data('userId',id);
+                $('#nameUserInChangeBalanceModal').text(response.user.name + ' ').append($('<i class="fa fa-user" aria-hidden="true"></i>')).data('userId', id);
                 $('#currentBalanceInChangeBalanceModal').text('Баланс: ' + response.user.balance);
             } else if (response.status === false || response.status === 'error') {
                 alert(response.error);
@@ -66,15 +85,15 @@ function getBalance(id) {
     $('#changeBalanceModal').modal('show');
 }
 
-function addBalance(){
+function addBalance() {
     var addBalance = $('#balanceUserInChangeModal').val(),
-    userId =  $('#nameUserInChangeBalanceModal').data('userId');
+        userId = $('#nameUserInChangeBalanceModal').data('userId');
     $.ajax({
         url: '/admin/addBalanceUser',
         data: {
             '_token': window.csrf,
-            'id' : userId,
-            'addBalance' : addBalance
+            'id': userId,
+            'addBalance': addBalance
         },
         dataType: 'json',
         type: "POST"
@@ -99,7 +118,7 @@ function getRentInfo(id) {
     $.ajax({
         url: '/admin/getRentInfo',
         data: {
-            'id' : id
+            'id': id
         },
         dataType: 'json',
         type: "get"
@@ -109,11 +128,11 @@ function getRentInfo(id) {
                 $('#RentInfoItem').empty();
                 response.products.forEach(function (i) {
                     var product;
-                    if (i.end_time == null){
-                        i.end_time = $('<i title="закрыть позицию" class="fa fa-ban"  data-time style="color: #d6190a; font-size: 25px" aria-hidden="true" onclick="end_time('+i.id_purchase+','+id+')"></i>');
-                         product = $('<tr></tr>');
-                    }else{
-                         product = $('<tr style="background-color: #9e9e9c"></tr>');
+                    if (i.end_time == null) {
+                        i.end_time = $('<i title="закрыть позицию" class="fa fa-ban"  data-time style="color: #d6190a; font-size: 25px" aria-hidden="true" onclick="end_time(' + i.id_purchase + ',' + id + ')"></i>');
+                        product = $('<tr></tr>');
+                    } else {
+                        product = $('<tr style="background-color: #9e9e9c"></tr>');
                     }
                     product.append($('<th></th>').append(i.id))
                         .append($('<th></th>').append(i.name))
@@ -134,12 +153,12 @@ function getRentInfo(id) {
     });
 }
 
-function end_time(id,modalId) {
+function end_time(id, modalId) {
     $.ajax({
         url: '/admin/endTime',
         data: {
             '_token': window.csrf,
-            'id' : id
+            'id': id
         },
         dataType: 'json',
         type: "post"
@@ -147,7 +166,7 @@ function end_time(id,modalId) {
         if (response !== undefined) {
             if (response.status === true) {
                 $('#rentInfo').modal('hide');
-                setTimeout( function () {
+                setTimeout(function () {
                     getRentInfo(modalId);
                 }, 200);
 
@@ -159,5 +178,39 @@ function end_time(id,modalId) {
         } else {
             alert('Ошибка запроса. Обратитесь к администратору.');
         }
+    });
+}
+
+function openSpoleModal(id) {
+    $('#formForUserLocation')[0].reset();
+    $('#regSpoleModal').modal('show');
+    $('#idUserForSpole').val(id);
+}
+
+function saveLocationUser() {
+    $.ajax({
+    	url: "/admin/userLocation",
+        headers : {
+    	    'X-CSRF-TOKEN' : window.csrf
+        },
+    	data: {
+    	    id : $('#idUserForSpole').val(),
+            location : $('#userLocation').val()
+        },
+    	dataType: 'json',
+    	type: "post"
+    }).done(function (response) {
+    	if (response !== undefined) {
+    		if (response.status === true) {
+                $('#regSpoleModal').modal('hide');
+                findUsers();
+    		} else if (response.status ===false || response.status === 'error') {
+    			alert(response.error);
+    		} else {
+    			alert('Ошибка запроса. Обратитесь к администратору.');
+    		}
+    	} else {
+    		alert('Ошибка запроса. Обратитесь к администратору.');
+    	}
     });
 }
